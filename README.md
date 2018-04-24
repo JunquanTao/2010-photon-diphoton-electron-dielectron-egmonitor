@@ -99,7 +99,7 @@ analyzer.makePlot("diphoton_mass")
 ```
 from the TwoPhotonAnalyzer.
 
-You can exit the ipython session by typing exit() or ctrl+d.
+You can exit the python session by typing exit() or ctrl+d.
 
 Events selection can be modified in the FourLeptonAnalyzer.py and TwoLeptonAnalyzer.py codes:
 ```
