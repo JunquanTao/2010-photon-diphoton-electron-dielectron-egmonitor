@@ -108,7 +108,7 @@ CMSOpenDataAnalysis/DecaysToPhotons/python/TwoPhotonAnalyzer.py
 ```
 For single photon, the loose photon id selections in PAS-EGM-10-006 (http://cdsweb.cern.ch/record/1324545) together with photon pT > 21 GeV are used. No electron-veto requirement is asked by default in teh codes. The output plots include the photon pT and eta, and some variables related to shower shape and photon isolation (11 variables in EB and 12 variables in EE at present) used for photon identification.
 
-For diphoton, I applied the event selections based on the cross section measurement with 2010 data (JHEP01(2012)133) but more simple and direct cuts.  The output plots include diphoton mass and pT, delta_Phi and cos_theta_star between two photons, which were used in the cross section measurement, and also additional the pt and eta of leading and subleading photons, with 8 variables in total. No electron-veto selection is required. From the mass plot, you can also check the Z peak and maybe also the Higgs :)
+For diphoton, I applied the event selections based on the cross section measurement with 2010 data (JHEP01(2012)133) but more simple and direct way. No electron-veto selection is required. The output plots include diphoton mass and pT, delta_Phi and cos_theta_star between two photons, which were used in the cross section measurement, and also additional the pt and eta of leading and subleading photons, with 8 variables in total. From the mass plot, you can see the Z peak and maybe also the Higgs :)
 
 
 
