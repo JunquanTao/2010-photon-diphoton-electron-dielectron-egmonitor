@@ -4,7 +4,7 @@ A brief introduction for this repo which contains two examples for:
 
 a) the single photon analysis with the producer "SinglePhotonAnalyzer"
 
-b) the double photon analysis with the producer "TwoPhotonAnalyzer.py"
+b) the double photon analysis with the producer "TwoPhotonAnalyzer"
 
 Both examples exercises running on Run2010B photon data in the AOD format, http://opendata.cern.ch/record/12.
 
