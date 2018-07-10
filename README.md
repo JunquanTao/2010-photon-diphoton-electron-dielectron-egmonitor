@@ -19,10 +19,7 @@ source /cvmfs/cms.cern.ch/cmsset_default.sh
 cmsrel CMSSW_4_2_8
 cd CMSSW_4_2_8/src
 git init
-git remote add origin https://github.com/JunquanTao/CMSOpenDataAnalysis.git 
-git fetch origin
-git checkout master
-scram b 
+git clone git://github.com/JunquanTao/CMSOpenDataAnalysis.git
 ```
 
 ## Sourcing the environment 
