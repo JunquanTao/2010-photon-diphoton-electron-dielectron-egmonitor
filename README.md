@@ -20,6 +20,7 @@ cmsrel CMSSW_4_2_8
 cd CMSSW_4_2_8/src
 git init
 git clone git://github.com/JunquanTao/CMSOpenDataAnalysis.git
+scram b
 ```
 
 ## Sourcing the environment 
