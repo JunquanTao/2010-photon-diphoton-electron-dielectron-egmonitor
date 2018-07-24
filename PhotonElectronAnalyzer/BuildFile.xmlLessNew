@@ -1,0 +1,19 @@
+<use   name="FWCore/Framework"/>
+<use   name="FWCore/Common"/>
+<use   name="FWCore/PluginManager"/>
+<use   name="FWCore/ParameterSet"/>
+<use   name="DataFormats/Common"/>
+<use   name="SimDataFormats/PileupSummaryInfo"/>
+<use   name="DataFormats/EgammaReco"/>
+<use   name="DataFormats/VertexReco"/>
+<use   name="DataFormats/Math"/>
+<use   name="DataFormats/TrackReco"/>
+<use   name="DataFormats/EgammaCandidates"/>
+<use   name="DataFormats/Luminosity"/>
+<use   name="RecoEgamma/EgammaTools"/>
+<use   name="RecoEcal/EgammaCoreTools"/>
+<use   name="RecoEgamma/EgammaIsolationAlgos"/>
+<use   name="Geometry/CommonDetUnit"/>
+<flags   EDM_PLUGIN="1"/>
+<export>
+</export>
