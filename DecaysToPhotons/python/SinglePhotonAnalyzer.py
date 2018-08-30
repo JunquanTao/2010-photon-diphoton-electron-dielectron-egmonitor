@@ -37,6 +37,9 @@ class SinglePhotonAnalyzer(Analyzer):
             return False
         if photon.hcalTowerSumEtConeDR04() > 2.2:
             return False
+        # pixel-seed e-veto 
+        if photon.hasPixelSeed():
+            return False
 
         # EB: 
         #if abs(photon.eta()) < 1.4442:

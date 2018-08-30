@@ -65,6 +65,9 @@ class Object(object):
     def phi(self):
         return self.p4.Phi()
 
+    def rapidity(self):
+        return self.p4.Rapidity()
+
 class Analyzer (object):
     """
     Skeleton for building Analyzers
@@ -286,3 +289,15 @@ class Analyzer (object):
 
     def makeAllPlots(self):
         return [self.makePlot(h) for h in self.histograms['data']]
+
+##############################################################################
+    def saveAllHists(self, OutputFileName):
+
+        file=ROOT.TFile(OutputFileName,"RECREATE")
+        file.cd()
+        for h in self.histograms['data']:
+            self.histograms['data'][h].Write()
+            
+        file.Write()
+        file.Close()
+        return 

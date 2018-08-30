@@ -20,7 +20,8 @@ for sample in sources:
     analyzer.processSample(sample, maxEv=-1)
 
 
-analyzer.makeAllPlots()
+#analyzer.makeAllPlots()
+analyzer.saveAllHists("Output_Hists.root")
 
 # uncommet line below to export selected data to a json file
 #analyzer.exportData()

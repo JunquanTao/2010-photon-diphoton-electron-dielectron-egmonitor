@@ -22,7 +22,13 @@ def twoobj_deltaR(eta1, phi1, eta2, phi2):
         return deltaR
 
 ##cosThetaStar
-def getCosThetaCS(g1, g2, sqrtS=7):
+def getCosThetaStar(g1, g2): #2010
+        r1 = g1.Rapidity()
+        r2 = g2.Rapidity()
+        deltaRad = r1-r2
+        return abs(math.tanh(deltaRad/2.0))
+
+def getCosThetaCS(g1, g2, sqrtS=7): #2011
         #print "JTao: pT1 = ",g1.Pt(),", pT2 = ",g2.Pt()," and sqrt = ",sqrtS
 	beamE = 500.*sqrtS	
 	b1 = ROOT.TLorentzVector(0., 0., beamE, beamE)
@@ -74,7 +80,10 @@ class TwoPhotonAnalyzer(Analyzer):
             return False
         if photon.ecalRecHitSumEtConeDR03() / photon.pt() > 0.3:
             return False
- 	# No electron-veto required : bool hasPixelSeed() to keep more/conversion photons	
+ 	# electron-veto required : bool hasPixelSeed() 	
+        # Pixel-seed e-veto 
+        if photon.hasPixelSeed(): 
+            return False
         # EB: 
  	#if abs(photon.eta()) < 1.4442:
         if abs(photon.superCluster().position().Eta()) < 1.4442:
