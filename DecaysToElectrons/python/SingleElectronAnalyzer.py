@@ -81,7 +81,7 @@ class SingleElectronAnalyzer(Analyzer):
 
         # EE:
         if abs(electron.superCluster().position().Eta()) > 1.566:
-            if RelCombinedIsoEB > 0.06:
+            if RelCombinedIsoEE > 0.06:
                 return False
             if trackIsoRel > 0.05:
                return False
