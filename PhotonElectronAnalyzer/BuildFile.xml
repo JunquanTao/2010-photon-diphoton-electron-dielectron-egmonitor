@@ -25,6 +25,9 @@
 <use   name="DataFormats/MuonReco"/>
 <use   name="Geometry/CommonDetUnit"/>
 <use   name="DataFormats/METReco"/>
+<use   name="hepmc"/>
+<use   name="clhep"/>
+<use   name="root"/>
 <flags   EDM_PLUGIN="1"/>
 <export>
 </export>
