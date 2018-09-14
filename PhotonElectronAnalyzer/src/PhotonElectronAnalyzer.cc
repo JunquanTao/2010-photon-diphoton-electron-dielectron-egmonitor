@@ -88,6 +88,7 @@ using namespace reco;
 using namespace edm;
 
 #define TAODEBUG 0
+#define TAODEBUGHLT 1
 
 class PhotonElectronAnalyzer : public edm::EDAnalyzer {
 public:
@@ -171,12 +172,12 @@ private:
   //single electron
   double electron_pt, electron_eta, electron_phi, electron_SCeta;
   int electron_q;
-  double electron_trckIso03, electron_ecalIso03, electron_hcalIso03, electron_RelCombinedIso03;
+  double electron_trckIso03Rel, electron_ecalIso03Rel, electron_hcalIso03Rel, electron_RelCombinedIso03;
   double electron_hoe, electron_sigieie;
   double electron_DeltaPhiSCTrk, electron_DeltaEtaSCTrk;
   int electron_Nmisshit;
   double electron_DisConv, electron_DeltaCotTheta;
-
+  double electron_fbrem,  electron_ESCoPin, electron_AbsInvEmInvPin;
 
   //dielectron
   int n_dielectron_sel;
@@ -184,17 +185,19 @@ private:
 
   double diele_ele1_pt, diele_ele1_eta, diele_ele1_phi, diele_ele1_e, diele_ele1_SCeta, diele_ele1_Escraw;
   int diele_ele1_q;
-  double diele_ele1_trckIso03, diele_ele1_ecalIso03, diele_ele1_hcalIso03, diele_ele1_RelCombinedIso03;
+  double diele_ele1_trckIso03Rel, diele_ele1_ecalIso03Rel, diele_ele1_hcalIso03Rel, diele_ele1_RelCombinedIso03;
   double diele_ele1_hoe, diele_ele1_sigieie, diele_ele1_DeltaPhiSCTrk, diele_ele1_DeltaEtaSCTrk;
   int diele_ele1_Nmisshit;
   double diele_ele1_DisConv, diele_ele1_DeltaCotTheta;
+  double diele_ele1_fbrem, diele_ele1_ESCoPin, diele_ele1_AbsInvEmInvPin;
 
   double diele_ele2_pt, diele_ele2_eta, diele_ele2_phi, diele_ele2_e, diele_ele2_SCeta, diele_ele2_Escraw;
   int diele_ele2_q;
-  double diele_ele2_trckIso03, diele_ele2_ecalIso03, diele_ele2_hcalIso03, diele_ele2_RelCombinedIso03;
+  double diele_ele2_trckIso03Rel, diele_ele2_ecalIso03Rel, diele_ele2_hcalIso03Rel, diele_ele2_RelCombinedIso03;
   double diele_ele2_hoe, diele_ele2_sigieie, diele_ele2_DeltaPhiSCTrk, diele_ele2_DeltaEtaSCTrk;
   int diele_ele2_Nmisshit;
   double diele_ele2_DisConv, diele_ele2_DeltaCotTheta;
+  double diele_ele2_fbrem, diele_ele2_ESCoPin, diele_ele2_AbsInvEmInvPin;
 
   double diele_pt,  diele_eta,  diele_phi, diele_energy, diele_mass;
   double diele_DeltaR;
@@ -217,17 +220,20 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   nEvt=0;
 
   //CMS AN AN-10-268
-  string hlt_pho1="HLT_Photon10_L1R"; //132440-132596
-  string hlt_pho2="HLT_Photon20_L1R"; //139458-138564
-  string hlt_pho3="HLT_Photon20_Cleaned L1R"; //140399-141956  
-  string hlt_pho4="HLT_Photon25_Cleaned L1R"; //144112-144011
+  string hlt_pho1="HLT_Photon10_Cleaned_L1R"; 
+  string hlt_pho2="HLT_Photon15_Cleaned_L1R"; 
+  string hlt_pho3="HLT_Photon20_Cleaned_L1R";   
+  //string hlt_pho4="HLT_Photon25_Cleaned_L1R";
+  string hlt_pho4="HLT_Photon30_Cleaned_L1R";
+  string hlt_pho5="HLT_Photon50_NoHE_Cleaned_L1R";
   HLTPaths_photon.push_back(hlt_pho1);
   HLTPaths_photon.push_back(hlt_pho2);
   HLTPaths_photon.push_back(hlt_pho3);
   HLTPaths_photon.push_back(hlt_pho4);
+  HLTPaths_photon.push_back(hlt_pho5);
 
   //CMS AN -2011/032
-  string hlt_dipho1="HLT_DoublePhoton15_L1R";  //141956 - 147116  2.9pb-1
+  string hlt_dipho1="HLT_DoublePhoton15_L1R";  //141956 - 144116  2.9pb-1
   string hlt_dipho2="HLT_DoublePhoton17_L1R";  //146428 - 148058  14.52pb-1
   string hlt_dipho3="HLT_Photon17_Isol_SC17HE_L1R";  //148822 - 149294 18.44pb-1
   HLTPaths_diphoton.push_back(hlt_dipho1);
@@ -361,9 +367,9 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   electronTree->Branch("electron_SCeta", &electron_SCeta,"electron_SCeta/D");
   electronTree->Branch("electron_q", &electron_q,"electron_q/I");
 
-  electronTree->Branch("electron_trckIso03", &electron_trckIso03,"electron_trckIso03/D");
-  electronTree->Branch("electron_ecalIso03", &electron_ecalIso03,"electron_ecalIso03/D");
-  electronTree->Branch("electron_hcalIso03", &electron_hcalIso03,"electron_hcalIso03/D");
+  electronTree->Branch("electron_trckIso03Rel", &electron_trckIso03Rel,"electron_trckIso03Rel/D");
+  electronTree->Branch("electron_ecalIso03Rel", &electron_ecalIso03Rel,"electron_ecalIso03Rel/D");
+  electronTree->Branch("electron_hcalIso03Rel", &electron_hcalIso03Rel,"electron_hcalIso03Rel/D");
   electronTree->Branch("electron_RelCombinedIso03", &electron_RelCombinedIso03,"electron_RelCombinedIso03/D");
 
   electronTree->Branch("electron_hoe", &electron_hoe,"electron_hoe/D");
@@ -373,6 +379,10 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   electronTree->Branch("electron_Nmisshit", &electron_Nmisshit,"electron_Nmisshit/I");
   electronTree->Branch("electron_DisConv", &electron_DisConv,"electron_DisConv/D");
   electronTree->Branch("electron_DeltaCotTheta", &electron_DeltaCotTheta,"electron_DeltaCotTheta/D");
+
+  electronTree->Branch("electron_fbrem", &electron_fbrem,"electron_fbrem/D");
+  electronTree->Branch("electron_ESCoPin", &electron_ESCoPin,"electron_ESCoPin/D");
+  electronTree->Branch("electron_AbsInvEmInvPin", &electron_AbsInvEmInvPin,"electron_AbsInvEmInvPin/D");
   //electronTree->Branch("", &,"/D");
 
   //di-electron
@@ -395,9 +405,9 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   dielectronTree->Branch("diele_ele1_SCeta", &diele_ele1_SCeta,"diele_ele1_SCeta/D");
   dielectronTree->Branch("diele_ele1_Escraw", &diele_ele1_Escraw,"diele_ele1_Escraw/D");
   dielectronTree->Branch("diele_ele1_q", &diele_ele1_q,"diele_ele1_q/I");
-  dielectronTree->Branch("diele_ele1_trckIso03", &diele_ele1_trckIso03,"diele_ele1_trckIso03/D");
-  dielectronTree->Branch("diele_ele1_ecalIso03", &diele_ele1_ecalIso03,"diele_ele1_ecalIso03/D");
-  dielectronTree->Branch("diele_ele1_hcalIso03", &diele_ele1_hcalIso03,"diele_ele1_hcalIso03/D");
+  dielectronTree->Branch("diele_ele1_trckIso03Rel", &diele_ele1_trckIso03Rel,"diele_ele1_trckIso03Rel/D");
+  dielectronTree->Branch("diele_ele1_ecalIso03Rel", &diele_ele1_ecalIso03Rel,"diele_ele1_ecalIso03Rel/D");
+  dielectronTree->Branch("diele_ele1_hcalIso03Rel", &diele_ele1_hcalIso03Rel,"diele_ele1_hcalIso03Rel/D");
   dielectronTree->Branch("diele_ele1_RelCombinedIso03", &diele_ele1_RelCombinedIso03,"diele_ele1_RelCombinedIso03/D");
   dielectronTree->Branch("diele_ele1_hoe", &diele_ele1_hoe,"diele_ele1_hoe/D");
   dielectronTree->Branch("diele_ele1_sigieie", &diele_ele1_sigieie,"diele_ele1_sigieie/D");
@@ -406,7 +416,10 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   dielectronTree->Branch("diele_ele1_Nmisshit", &diele_ele1_Nmisshit,"diele_ele1_Nmisshit/I");
   dielectronTree->Branch("diele_ele1_DisConv", &diele_ele1_DisConv,"diele_ele1_DisConv/D");
   dielectronTree->Branch("diele_ele1_DeltaCotTheta", &diele_ele1_DeltaCotTheta,"diele_ele1_DeltaCotTheta/D");
-
+  dielectronTree->Branch("diele_ele1_fbrem", &diele_ele1_fbrem,"diele_ele1_fbrem/D");
+  dielectronTree->Branch("diele_ele1_ESCoPin", &diele_ele1_ESCoPin,"diele_ele1_ESCoPin/D");
+  dielectronTree->Branch("diele_ele1_AbsInvEmInvPin", &diele_ele1_AbsInvEmInvPin,"diele_ele1_AbsInvEmInvPin/D");
+ 
   dielectronTree->Branch("diele_ele2_pt", &diele_ele2_pt,"diele_ele2_pt/D");
   dielectronTree->Branch("diele_ele2_eta", &diele_ele2_eta,"diele_ele2_eta/D");
   dielectronTree->Branch("diele_ele2_phi", &diele_ele2_phi,"diele_ele2_phi/D");
@@ -414,9 +427,9 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   dielectronTree->Branch("diele_ele2_SCeta", &diele_ele2_SCeta,"diele_ele2_SCeta/D");
   dielectronTree->Branch("diele_ele2_Escraw", &diele_ele2_Escraw,"diele_ele2_Escraw/D");
   dielectronTree->Branch("diele_ele2_q", &diele_ele2_q,"diele_ele2_q/I");
-  dielectronTree->Branch("diele_ele2_trckIso03", &diele_ele2_trckIso03,"diele_ele2_trckIso03/D");
-  dielectronTree->Branch("diele_ele2_ecalIso03", &diele_ele2_ecalIso03,"diele_ele2_ecalIso03/D");
-  dielectronTree->Branch("diele_ele2_hcalIso03", &diele_ele2_hcalIso03,"diele_ele2_hcalIso03/D");
+  dielectronTree->Branch("diele_ele2_trckIso03Rel", &diele_ele2_trckIso03Rel,"diele_ele2_trckIso03Rel/D");
+  dielectronTree->Branch("diele_ele2_ecalIso03Rel", &diele_ele2_ecalIso03Rel,"diele_ele2_ecalIso03Rel/D");
+  dielectronTree->Branch("diele_ele2_hcalIso03Rel", &diele_ele2_hcalIso03Rel,"diele_ele2_hcalIso03Rel/D");
   dielectronTree->Branch("diele_ele2_RelCombinedIso03", &diele_ele2_RelCombinedIso03,"diele_ele2_RelCombinedIso03/D");
   dielectronTree->Branch("diele_ele2_hoe", &diele_ele2_hoe,"diele_ele2_hoe/D");
   dielectronTree->Branch("diele_ele2_sigieie", &diele_ele2_sigieie,"diele_ele2_sigieie/D");
@@ -425,6 +438,9 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   dielectronTree->Branch("diele_ele2_Nmisshit", &diele_ele2_Nmisshit,"diele_ele2_Nmisshit/I");
   dielectronTree->Branch("diele_ele2_DisConv", &diele_ele2_DisConv,"diele_ele2_DisConv/D");
   dielectronTree->Branch("diele_ele2_DeltaCotTheta", &diele_ele2_DeltaCotTheta,"diele_ele2_DeltaCotTheta/D");
+  dielectronTree->Branch("diele_ele2_fbrem", &diele_ele2_fbrem,"diele_ele2_fbrem/D");
+  dielectronTree->Branch("diele_ele2_ESCoPin", &diele_ele2_ESCoPin,"diele_ele2_ESCoPin/D");
+  dielectronTree->Branch("diele_ele2_AbsInvEmInvPin", &diele_ele2_AbsInvEmInvPin,"diele_ele2_AbsInvEmInvPin/D");
 
   dielectronTree->Branch("diele_pt", &diele_pt,"diele_pt/D");
   dielectronTree->Branch("diele_eta", &diele_eta,"diele_eta/D");
@@ -548,6 +564,7 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
     const edm::TriggerNames & triggerNames = iEvent.triggerNames(*trigResults);
     for (int itrig = 0; itrig != ntrigs; ++itrig){
       const std::string trigName = triggerNames.triggerName(itrig);
+      if(TAODEBUGHLT == 1 && nEvt == 1) cout<<"JTao: HLT name - "<<trigName<<" for itrig="<<itrig<<endl;
       //single photon HLT
       for(unsigned int i=0; i<HLTPaths_photon.size(); i++){
 	string MyHLTName = HLTPaths_photon[i];
@@ -600,9 +617,11 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
       //HCAL shwoer : E^{HCAL}/E< 0:05  -> H/E
       //pixel-seed e-veto
       //IsoTRK < 2 GeV, 0.04-0.4 hollow cone
-      //IsoECAL < 4:2 GeV, 0.06-0.4 cone
-      //IsoHCAL < 2:2 GeV, 0.15-0.4 cone
-      if ( et_p > 21. && fabs(scEta_p) < 1.45  && !photons->hasPixelSeed() && photons->hadronicOverEm() < 0.05 && photons->trkSumPtHollowConeDR04() < 2. && photons->ecalRecHitSumEtConeDR04() < 4.2 && photons->hcalTowerSumEtConeDR04() < 2.2 ) {
+      //sigmaIetaIeta < 0.011/0.03 in EB/EE and HoE (hadronicOverEm) < 0.05 
+      //IsoECAL < 4.2 GeV, 0.06-0.4 cone
+      //IsoHCAL < 2.2 GeV, 0.15-0.4 cone
+      //if ( et_p > 21. && fabs(scEta_p) < 1.45   && !photons->hasPixelSeed() && photons->hadronicOverEm() < 0.05 && photons->trkSumPtHollowConeDR04() < 2. && photons->ecalRecHitSumEtConeDR04() < 4.2 && photons->hcalTowerSumEtConeDR04() < 2.2 ) {
+      if ( et_p > 21. && ( fabs(scEta_p) < 1.4442 || abs(scEta_p)>1.566 && fabs(scEta_p)<2.5 )  && !photons->hasPixelSeed() && photons->hadronicOverEm() < 0.05 && photons->trkSumPtHollowConeDR04() < 2. && photons->ecalRecHitSumEtConeDR04() < 4.2 && photons->hcalTowerSumEtConeDR04() < 2.2 ) {  //2010B
         if(TAODEBUG==1) cout<<"JTao : passed the single photon selection!"<<endl;
 	if( et_p > maxPhotonPT ){
 	  SelectedPhotonIndex = photonIndex;
@@ -619,28 +638,29 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
       //HCAL ISO (cone DeltaR=0.4) hcalTowerSumEtConeDR04 < 2./4. GeV in EB/EE
       //ECAL ISO (cone DeltaR=0.3) ecalRecHitSumEtConeDR03 < 0.2 * photon PT     
       if(et_p > 20. && (fabs(scEta_p)<1.44442 || fabs(scEta_p)>1.566 && fabs(scEta_p)<2.5) ){ //kinematics
-	if(TAODEBUG==1) cout<<"JTao : passed leading kinematics in diphoton selection!"<<endl;
+	if(TAODEBUG==1) cout<<"JTao : passed the first photon kinematics in diphoton selection!"<<endl;
 	if(photons->hadronicOverEm()<0.05 && !photons->hasPixelSeed() && photons->ecalRecHitSumEtConeDR03()/et_p < 0.2 ){//common selections
 	  if( (fabs(scEta_p)<1.4442 && photons->trkSumPtHollowConeDR04() < 2. && photons->hcalTowerSumEtConeDR04() < 2. && photons->sigmaIetaIeta() < 0.01) || (fabs(scEta_p)>1.566 && fabs(scEta_p)<2.5 && photons->trkSumPtHollowConeDR04() < 4. && photons->hcalTowerSumEtConeDR04() < 4. && photons->sigmaIetaIeta() < 0.03) ){ //EB or EE isolation
-	    if(TAODEBUG==1) cout<<"JTao : passed leading iso in diphoton selection!"<<endl;
+	    if(TAODEBUG==1) cout<<"JTao : passed the first photon iso in diphoton selection with leading index = "<<photonIndex<<endl;
 	    //photon2
             int photon2Ind = 0;
             for ( reco::PhotonCollection::const_iterator photons2 = phoCollection->begin(); photons2 != phoCollection->end(); ++photons2 ) {
 	      if(photon2Ind>photonIndex){//not photon1
-		if(TAODEBUG==1) cout<<"JTao : passed subleading kinematics in diphoton selection!"<<endl;
+		if(TAODEBUG==1) cout<<"JTao : starting find the second photon index in diphoton selection!"<<endl;
 		double et_p2 = photons2->et();
 		double scEta_p2 = photons2->superCluster()->position().Eta();
 		double phi_p2 = photons2->phi();
 		if(et_p2 > 20. && (fabs(scEta_p2)<1.44442 || fabs(scEta_p2)>1.566 && fabs(scEta_p2)<2.5) ){ //kinematics
+                  if(TAODEBUG==1) cout<<"JTao : passed the second photon kinematics in diphoton selection!"<<endl;        
 		  if(photons2->hadronicOverEm()<0.05 && !photons2->hasPixelSeed() && photons2->ecalRecHitSumEtConeDR03()/et_p2 < 0.2 ){//common selections
 		    if( (fabs(scEta_p2)<1.4442 && photons->trkSumPtHollowConeDR04() < 2. && photons2->hcalTowerSumEtConeDR04() < 2. && photons2->sigmaIetaIeta() < 0.01) || (fabs(scEta_p2)>1.566 && fabs(scEta_p2)<2.5 && photons2->trkSumPtHollowConeDR04() < 4. && photons2->hcalTowerSumEtConeDR04() < 4. && photons2->sigmaIetaIeta() < 0.03) ){ //EB or EE isolation
-		      if(TAODEBUG==1) cout<<"JTao : passed subleading iso in diphoton selection!"<<endl;
+		      if(TAODEBUG==1) cout<<"JTao : passed the second photon iso in diphoton selection!"<<endl;
 		      //if(TAODEBUG==1) cout<<"JTao : inputs of twoobj_deltaR scEta_p= "<<scEta_p<<" phi_p= "<<phi_p<<" scEta_p2= "<<scEta_p2<<" and phi_p2= "<<phi_p2<<endl;
 		      double DelataRgg = twoobj_deltaR(scEta_p, phi_p, scEta_p2, phi_p2);
 		      if(TAODEBUG==1) cout<<"JTao : in diphoton selection DelataRgg = "<<DelataRgg<<endl;
 		      //PT>(23,20)GeV, DeltaR>0.45
 		      if(max(et_p, et_p2)>23. && DelataRgg>0.45){
-			if(TAODEBUG==1) cout<<"JTao : passed diphoton selection!"<<endl;
+			if(TAODEBUG==1) cout<<"JTao : passed diphoton selection with pho1_ind="<<photonIndex<<" and pho2_ind="<<photon2Ind<<endl;
 			n_diphoton_sel++;
 			Diphoton_LeadInd = photonIndex; Diphoton_SubLeadInd = photon2Ind;
 			if(et_p2 > et_p){
@@ -654,8 +674,8 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		    }
 		  }
 		}
-		photon2Ind++;
 	      }//not photon1
+	      photon2Ind++;
 	    }//photons2 loop
 
 	  }
@@ -768,6 +788,7 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	//Conversion rejection: Number of missing hits (the number of missing expected hits in front of the innermost valid hit) - If NumberOfExpectedInnerHits is greater than 1, then the electron is vetoed as from a converted photon and should be rejected in an analysis looking for prompt photons. 
          int Nmisshit = electrons->gsfTrack()->trackerExpectedHitsInner().numberOfHits(); 
 	//int Nmisshit = electrons->gsfTrack().trackerExpectedHitsInner().numberOfHits();
+         // default value is -9999 if conversion partner not found
 	//Minimum distance between conversion tracks:
 	double DisConv = electrons->convDist();
 	// \Delta cot \theta $ between conversion tracks at conversion vertex:
@@ -775,8 +796,10 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
        
         int ifpassedselection = 1; 
         if( Nmisshit > 1 ) ifpassedselection = 0;
-	if( DisConv > 0.02 ) ifpassedselection = 0; 
-        if( DeltaCotTheta > 0.02 ) ifpassedselection = 0; 
+	//if( fabs(DisConv) < 0.02 ) ifpassedselection = 0; 
+        //if( fabs(DeltaCotTheta) < 0.02 ) ifpassedselection = 0;
+        Bool_t isConv = fabs(DisConv) < 0.02 && fabs(DeltaCotTheta) < 0.02;
+        if(isConv) ifpassedselection = 0;
 
         if ( fabs(scEta_ele) < 1.4442){ //EB
 	  if ( RelCombinedIsoEB > 0.09 ) ifpassedselection = 0;
@@ -841,9 +864,9 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
         electron_phi = electrons->phi();
         electron_SCeta = electrons->superCluster()->position().Eta();
         electron_q = electrons->charge();
-        electron_trckIso03 = electrons->dr03TkSumPt();
-        electron_ecalIso03  = electrons->dr03EcalRecHitSumEt();
-	electron_hcalIso03  = electrons->dr03HcalTowerSumEt();
+        electron_trckIso03Rel = electrons->dr03TkSumPt()/electrons->pt();
+        electron_ecalIso03Rel  = electrons->dr03EcalRecHitSumEt()/electrons->pt();
+	electron_hcalIso03Rel  = electrons->dr03HcalTowerSumEt()/electrons->pt();
 	double RelCombinedIsoEB = ( electrons->dr03TkSumPt() + max(0., electrons->dr03EcalRecHitSumEt() - 1.) + electrons->dr03HcalTowerSumEt() ) / electrons->pt();
 	double RelCombinedIsoEE = ( electrons->dr03TkSumPt() + electrons->dr03EcalRecHitSumEt() + electrons->dr03HcalTowerSumEt() ) / electrons->pt();
         electron_RelCombinedIso03 = RelCombinedIsoEB;
@@ -855,8 +878,11 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
  	electron_DeltaPhiSCTrk = electrons->deltaPhiSuperClusterTrackAtVtx();
 	electron_DeltaEtaSCTrk  = electrons->deltaEtaSuperClusterTrackAtVtx();
         electron_Nmisshit = electrons->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
-	electron_DisConv = electrons->convDist();
-	electron_DeltaCotTheta = electrons->convDcot();
+	electron_DisConv = fabs(electrons->convDist());
+	electron_DeltaCotTheta = fabs(electrons->convDcot());
+	electron_fbrem = electrons->fbrem();
+        electron_ESCoPin = electrons->eSuperClusterOverP();
+        electron_AbsInvEmInvPin = fabs(1.0/electrons->ecalEnergy() - 1.0/electrons->trackMomentumAtVtx().R());
 	//Fill Single electron tree
         electronTree->Fill();
 
@@ -872,9 +898,9 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	    diele_ele1_pt = electrons->pt();   diele_ele1_eta = electrons->eta();  diele_ele1_phi = electrons->phi();  diele_ele1_e = electrons->energy();
             diele_ele1_SCeta = electrons->superCluster()->position().Eta();        diele_ele1_Escraw = electrons->superCluster()->rawEnergy();
             diele_ele1_q = electrons->charge();   
-	    diele_ele1_trckIso03 = electrons->dr03TkSumPt();
-	    diele_ele1_ecalIso03  = electrons->dr03EcalRecHitSumEt();
-	    diele_ele1_hcalIso03  = electrons->dr03HcalTowerSumEt();
+	    diele_ele1_trckIso03Rel = electrons->dr03TkSumPt()/electrons->pt();
+	    diele_ele1_ecalIso03Rel  = electrons->dr03EcalRecHitSumEt()/electrons->pt();
+	    diele_ele1_hcalIso03Rel  = electrons->dr03HcalTowerSumEt()/electrons->pt();
 	    double RelCombinedIsoEB = ( electrons->dr03TkSumPt() + max(0., electrons->dr03EcalRecHitSumEt() - 1.) + electrons->dr03HcalTowerSumEt() ) / electrons->pt();
 	    double RelCombinedIsoEE = ( electrons->dr03TkSumPt() + electrons->dr03EcalRecHitSumEt() + electrons->dr03HcalTowerSumEt() ) / electrons->pt();
 	    diele_ele1_RelCombinedIso03 = RelCombinedIsoEB;
@@ -885,16 +911,19 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	    diele_ele1_DeltaPhiSCTrk = electrons->deltaPhiSuperClusterTrackAtVtx();
 	    diele_ele1_DeltaEtaSCTrk  = electrons->deltaEtaSuperClusterTrackAtVtx();
 	    diele_ele1_Nmisshit = electrons->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
-	    diele_ele1_DisConv = electrons->convDist();
-	    diele_ele1_DeltaCotTheta = electrons->convDcot();
+	    diele_ele1_DisConv = fabs(electrons->convDist());
+	    diele_ele1_DeltaCotTheta = fabs(electrons->convDcot());
+	    diele_ele1_fbrem = electrons->fbrem();
+	    diele_ele1_ESCoPin = electrons->eSuperClusterOverP();
+	    diele_ele1_AbsInvEmInvPin = fabs(1.0/electrons->ecalEnergy() - 1.0/electrons->trackMomentumAtVtx().R());
             
             //ele 2
  	    diele_ele2_pt = electrons2->pt();   diele_ele2_eta = electrons2->eta();  diele_ele2_phi = electrons2->phi();  diele_ele2_e = electrons2->energy();
             diele_ele2_SCeta = electrons2->superCluster()->position().Eta();        diele_ele2_Escraw = electrons2->superCluster()->rawEnergy();
             diele_ele2_q = electrons2->charge();   
-	    diele_ele2_trckIso03 = electrons2->dr03TkSumPt();
-	    diele_ele2_ecalIso03  = electrons2->dr03EcalRecHitSumEt();
-	    diele_ele2_hcalIso03  = electrons2->dr03HcalTowerSumEt();
+	    diele_ele2_trckIso03Rel = electrons2->dr03TkSumPt()/electrons2->pt();
+	    diele_ele2_ecalIso03Rel  = electrons2->dr03EcalRecHitSumEt()/electrons2->pt();
+	    diele_ele2_hcalIso03Rel  = electrons2->dr03HcalTowerSumEt()/electrons2->pt();
 	    double RelCombinedIso2EB = ( electrons2->dr03TkSumPt() + max(0., electrons2->dr03EcalRecHitSumEt() - 1.) + electrons2->dr03HcalTowerSumEt() ) / electrons2->pt();
 	    double RelCombinedIso2EE = ( electrons2->dr03TkSumPt() + electrons2->dr03EcalRecHitSumEt() + electrons2->dr03HcalTowerSumEt() ) / electrons2->pt();
 	    diele_ele2_RelCombinedIso03 = RelCombinedIso2EB;
@@ -905,8 +934,11 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	    diele_ele2_DeltaPhiSCTrk = electrons2->deltaPhiSuperClusterTrackAtVtx();
 	    diele_ele2_DeltaEtaSCTrk  = electrons2->deltaEtaSuperClusterTrackAtVtx();
 	    diele_ele2_Nmisshit = electrons2->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
-	    diele_ele2_DisConv = electrons2->convDist();
-	    diele_ele2_DeltaCotTheta = electrons2->convDcot();
+	    diele_ele2_DisConv = fabs(electrons2->convDist());
+	    diele_ele2_DeltaCotTheta = fabs(electrons2->convDcot());
+	    diele_ele2_fbrem = electrons2->fbrem();
+	    diele_ele2_ESCoPin = electrons2->eSuperClusterOverP();
+	    diele_ele2_AbsInvEmInvPin = fabs(1.0/electrons2->ecalEnergy() - 1.0/electrons2->trackMomentumAtVtx().R());
 
 	    //di-electron
 	    TLorentzVector lead_p4; lead_p4.SetPtEtaPhiM(diele_ele1_pt, diele_ele1_eta, diele_ele1_phi, electrons->mass());
