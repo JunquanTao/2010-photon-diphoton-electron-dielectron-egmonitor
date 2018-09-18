@@ -23,9 +23,11 @@
 //==============
 const int debug=1;
 const string TreeName = "photonTree";
-const string PlotPreName = "Photon2010B_";
-const string PlotLabel = "Photon 2010B";
-const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Photon_2010B-Apr21ReReco.root";
+const string PlotPreName = "Photon2010B_"; //"EGMonitor2010B"; //"Electron2010B"; //"Photon2010B_";
+const string PlotLabel = "Photon 2010B"; //"EGMonitor 2010B"; //"Electron 2010B"; //"Photon 2010B";
+const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Photon_Run2010B-Apr21ReReco.root";
+//const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Electron_Run2010B-Apr21ReReco.root";
+//const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/EGMonitor_Run2010B-Apr21ReReco.root";
 
 const TString PrintInfor1="#bf{CMS} #it{} #it{Preliminary}";
 //const TString PrintInfor2="2.9 pb^{-1} (7 TeV)";
@@ -161,8 +163,7 @@ void DrawSinglePhoton(){
   gStyle->SetOptStat(0);
   gStyle->SetOptFit(111);
 
-  //string BasicSelections="event_PassHLT_SinglePhoton == 1 && run <= 144116"; //2.9pb-1
-  string BasicSelections="event_PassHLT_SinglePhoton == 1"; //2.9pb-1
+  string BasicSelections="event_PassHLT_SinglePhoton == 1"; 
 
   DrawMyPlots("photon_pt", BasicSelections, "p_{T} of #gamma (GeV)", "GeV",  "photon_pt", 60, 18, 78);
   DrawMyPlots("photon_SCeta", BasicSelections,"#eta_{SC}", "", "photon_SCeta",60, -3, 3);
@@ -172,9 +173,8 @@ void DrawSinglePhoton(){
   DrawMyPlots("photon_TrkIsoHollow04", BasicSelections, "Track Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_TrkIsoHollow04", 110, -0.1, 2.1, 0, 1);
   DrawMyPlots("photon_EcalIso04", BasicSelections, "ECAL Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_EcalIso04", 90, -0.1, 4.4);
   DrawMyPlots("photon_HcalIso04", BasicSelections, "HCAL Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_HcalIso04", 50, -0.1, 2.4, 0, 1);
-    
-  string BasicSelectionsEB="event_PassHLT_SinglePhoton == 1 && fabs(photon_SCeta)<1.5"; //2.9pb-1
-  DrawMyPlots("photon_pt", BasicSelectionsEB, "p_{T} of #gamma (GeV)", "GeV",  "photon_pt_EB", 60, 18, 78, 0, 0, 1);
+
+  string BasicSelectionsEB="event_PassHLT_SinglePhoton == 1 && fabs(photon_SCeta)<1.5"; 
   DrawMyPlots("photon_r9", BasicSelectionsEB, "R_{9} of #gamma", "", "photon_r9_EB", 81, 0.2, 1.01, 1, 0, 1);
   DrawMyPlots("photon_hoe", BasicSelectionsEB, "H/E of #gamma", "", "photon_hoe_EB", 120, 0.0, 0.06, 0, 1, 1);
   DrawMyPlots("photon_sieie", BasicSelectionsEB,"#sigma_{i#etai#eta}", "", "photon_sieie_EB", 60, 0.0, 0.03, 0, 0, 1);
@@ -182,7 +182,7 @@ void DrawSinglePhoton(){
   DrawMyPlots("photon_EcalIso04", BasicSelectionsEB, "ECAL Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_EcalIso04_EB", 90, -0.1, 4.4, 0, 0, 1);
   DrawMyPlots("photon_HcalIso04", BasicSelectionsEB, "HCAL Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_HcalIso04_EB", 50, -0.1, 2.4, 0, 1, 1);
 
-  string BasicSelectionsEE="event_PassHLT_SinglePhoton == 1 && fabs(photon_SCeta)>1.5"; //2.9pb-1
+  string BasicSelectionsEE="event_PassHLT_SinglePhoton == 1 && fabs(photon_SCeta)>1.5"; 
   DrawMyPlots("photon_pt", BasicSelectionsEE, "p_{T} of #gamma (GeV)", "GeV",  "photon_pt_EE", 60, 18, 78, 0, 0, 0);
   DrawMyPlots("photon_r9", BasicSelectionsEE, "R_{9} of #gamma", "", "photon_r9_EE", 81, 0.2, 1.01, 1, 0, 0);
   DrawMyPlots("photon_hoe", BasicSelectionsEE, "H/E of #gamma", "", "photon_hoe_EE", 120, 0.0, 0.06, 0, 1, 0);
@@ -190,4 +190,7 @@ void DrawSinglePhoton(){
   DrawMyPlots("photon_TrkIsoHollow04", BasicSelectionsEE, "Track Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_TrkIsoHollow04_EE", 110, -0.1, 2.1, 0, 1, 0);
   DrawMyPlots("photon_EcalIso04", BasicSelectionsEE, "ECAL Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_EcalIso04_EE", 90, -0.1, 4.4, 0, 0, 0);
   DrawMyPlots("photon_HcalIso04", BasicSelectionsEE, "HCAL Iso (#DeltaR=0.4) (GeV)", "GeV", "photon_HcalIso04_EE", 50, -0.1, 2.4, 0, 1, 0);
+
+  //string BasicSelectionsEB2p9="event_PassHLT_SinglePhoton == 1 && fabs(photon_SCeta)<1.5 && run <= 144116"; //2.9pb-1
+  //DrawMyPlots("photon_pt", BasicSelectionsEB2p9, "p_{T} of #gamma (GeV)", "GeV",  "photon_pt_EB2p9", 50, 20, 300, 0, 1, 1);
 }

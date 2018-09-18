@@ -23,9 +23,12 @@
 //==============
 const int debug=1;
 const string TreeName = "diphotonTree";
-const string PlotPreName = "Photon2010B_";
-const string PlotLabel = "Photon 2010B";
-const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Photon_2010B-Apr21ReReco.root";
+
+const string PlotPreName = "Photon2010B_"; //"EGMonitor2010B"; //"Electron2010B"; //"Photon2010B_";
+const string PlotLabel = "Photon 2010B"; //"EGMonitor 2010B"; //"Electron 2010B"; //"Photon 2010B";
+const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Photon_Run2010B-Apr21ReReco.root";
+//const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Electron_Run2010B-Apr21ReReco.root";
+//const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/EGMonitor_Run2010B-Apr21ReReco.root";
 
 const TString PrintInfor1="#bf{CMS} #it{} #it{Preliminary}";
 //const TString PrintInfor2="2.9 pb^{-1} (7 TeV)";
@@ -164,7 +167,7 @@ void DrawDiPhoton(){
   DrawMyPlots("dipho_pt", BasicSelections, "p_{T,#gamma#gamma} (GeV)", "GeV",  "dipho_pt", 24, 0, 120, 0, 1);
   DrawMyPlots("dipho_mass", BasicSelections, "m_{#gamma#gamma} (GeV)", "GeV",  "dipho_mass", 30, 0, 300, 0, 1);
   DrawMyPlots("dipho_DeltaPhi", BasicSelections, "#Delta#phi_{#gamma#gamma}", "",  "dipho_DeltaPhi", 20, 0, 3.1416, 1, 1);
-  DrawMyPlots("dipho_CosThetaStar", BasicSelections, "cos#theta^{*}_{#gamma#gamma}", "",  "dipho_CosThetaStar", 5, 0, 1);
+  DrawMyPlots("dipho_CosThetaStar", BasicSelections, "|cos#theta^{*}_{#gamma#gamma}|", "",  "dipho_CosThetaStar", 5, 0, 1);
 
   DrawMyPlots("dipho_DeltaR", BasicSelections, "#DeltaR_{#gamma#gamma}", "",  "dipho_DeltaR", 80, 0, 8);
 

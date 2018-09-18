@@ -22,13 +22,13 @@
 
 //==============
 const int debug=1;
-const string TreeName = "dielectronTree";
-const string PlotPreName = "EGMonitor2010B"; //"Electron2010B_"; //"Photon2010B_"; //"Electron2010B_";
-const string PlotLabel = "EGMonitor 2010B"; //"Electron 2010B"; //"Photon 2010B"; //"Electron 2010B"; 
+const string TreeName = "eventTree";
+
+const string PlotPreName = "EGMonitor2010B_"; //"Electron2010B_"; //"Photon2010B_";
+const string PlotLabel = "EGMonitor 2010B"; //"Electron 2010B"; //"Photon 2010B";
 //const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Photon_Run2010B-Apr21ReReco.root";
 //const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Electron_Run2010B-Apr21ReReco.root";
 const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/EGMonitor_Run2010B-Apr21ReReco.root";
-
 
 const TString PrintInfor1="#bf{CMS} #it{} #it{Preliminary}";
 const TString PrintInfor2="2010 (7 TeV)";
@@ -158,51 +158,21 @@ void DrawMyPlots(string Object, string Selections,  string XTitle, string YUnit,
 }
 
 
-void DrawDiElectron(){
+void DrawEvtTreeVar(){
 
   gROOT->ProcessLine(".x hggPaperStyle.C");
-  gStyle->SetOptStat(0);
+  gStyle->SetOptStat(110);  //0
   gStyle->SetOptFit(111);
+  gStyle->SetStatY(0.7);                
+  // Set y-position (fraction of pad size)
+  gStyle->SetStatX(0.9);                
+  // Set x-position (fraction of pad size)
+  gStyle->SetStatW(0.4);                
+  // Set width of stat-box (fraction of pad size)
+  gStyle->SetStatH(0.2);                
+  // Set height of stat-box (fraction of pad size)
+  string BasicSelections="nvtx>=0";  //no effect
 
-  string BasicSelections="diele_pt>0.";  //no effect
+  DrawMyPlots("nvtx", BasicSelections, "Number of reconstructed vertices", "",  "nvtx", 17, -0.5, 16.5);
 
-  DrawMyPlots("diele_pt", BasicSelections, "p_{T}^{ee} (GeV)", "GeV",  "diele_pt", 100, 0, 100);
-  DrawMyPlots("diele_mass", BasicSelections, "M_{ee} (GeV)", "GeV",  "diele_mass", 60, 60, 120);
-  DrawMyPlots("diele_DeltaR", BasicSelections, "#DeltaR_{ee}", "",  "diele_DeltaR", 70, 0,7.0);
-
-
-  //ele1
-  DrawMyPlots("diele_ele1_pt", BasicSelections, "p_{T} (GeV)", "GeV",  "diele_ele1_pt", 60, 18, 78);
-  DrawMyPlots("diele_ele1_SCeta", BasicSelections,"#eta_{SC}", "", "diele_ele1_SCeta",60, -3, 3);
-  DrawMyPlots("diele_ele1_hoe", BasicSelections, "H/E", "", "diele_ele1_hoe", 100, 0.0, 0.05, 0, 1);
-  DrawMyPlots("diele_ele1_sigieie", BasicSelections,"#sigma_{i#etai#eta}", "", "diele_ele1_sigieie", 60, 0.005, 0.035);
- 
-  DrawMyPlots("diele_ele1_trckIso03Rel", BasicSelections, "Track Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele1_trckIso03Rel", 100, 0., 0.1, 0, 1);
-  DrawMyPlots("diele_ele1_ecalIso03Rel", BasicSelections, "ECAL Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele1_ecalIso03Rel", 120, -0.02, 0.1);
-  DrawMyPlots("diele_ele1_hcalIso03Rel", BasicSelections, "HCAL Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele1_hcalIso03Rel", 100,  0., 0.1, 0, 1);
-  DrawMyPlots("diele_ele1_RelCombinedIso03", BasicSelections, "Combined Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele1_RelCombinedIso03", 100,  0., 0.1, 0, 1);
-  DrawMyPlots("diele_ele1_DeltaEtaSCTrk", BasicSelections, "#Delta#eta(SC, trk at vtx)", "", "diele_ele1_DeltaEtaSCTrk", 100,  0., 0.01);
-  DrawMyPlots("diele_ele1_DeltaPhiSCTrk", BasicSelections, "#Delta#phi(SC, trk at vtx)", "", "diele_ele1_DeltaPhiSCTrk", 100,  0., 0.08);
- 
-  DrawMyPlots("diele_ele1_Nmisshit", BasicSelections, "Number of missing hits", "", "diele_ele1_Nmisshit", 3,  -0.5, 2.5);
-  DrawMyPlots("diele_ele1_DisConv", BasicSelections, "Minimum distance between conversion tracks", "", "diele_ele1_DisConv", 51,  0.01, 0.5);
-  DrawMyPlots("diele_ele1_DeltaCotTheta", BasicSelections, "#Deltacot#theta between conversion tracks", "", "diele_ele1_DeltaCotTheta", 99,  0.01, 1.0);
-
-  //ele2
-  DrawMyPlots("diele_ele2_pt", BasicSelections, "p_{T} (GeV)", "GeV",  "diele_ele2_pt", 60, 18, 78);
-  DrawMyPlots("diele_ele2_SCeta", BasicSelections,"#eta_{SC}", "", "diele_ele2_SCeta",60, -3, 3);
-  DrawMyPlots("diele_ele2_hoe", BasicSelections, "H/E", "", "diele_ele2_hoe", 200, 0.0, 0.2, 0, 1);
-  DrawMyPlots("diele_ele2_sigieie", BasicSelections,"#sigma_{i#etai#eta}", "", "diele_ele2_sigieie", 80, 0.005, 0.045);
- 
-  DrawMyPlots("diele_ele2_trckIso03Rel", BasicSelections, "Track Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele2_trckIso03Rel", 100, 0., 1., 0, 1);
-  DrawMyPlots("diele_ele2_ecalIso03Rel", BasicSelections, "ECAL Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele2_ecalIso03Rel", 100, -0.05, 0.45);
-  DrawMyPlots("diele_ele2_hcalIso03Rel", BasicSelections, "HCAL Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele2_hcalIso03Rel", 100,  0., 1., 0, 1);
-  DrawMyPlots("diele_ele2_RelCombinedIso03", BasicSelections, "Combined Iso (#DeltaR=0.3) / p_{T}^{e}", "", "diele_ele2_RelCombinedIso03", 100,  0., 1., 0, 1);
-  DrawMyPlots("diele_ele2_DeltaEtaSCTrk", BasicSelections, "#Delta#eta(SC, trk at vtx)", "", "diele_ele2_DeltaEtaSCTrk", 100,  0., 0.1);
-  DrawMyPlots("diele_ele2_DeltaPhiSCTrk", BasicSelections, "#Delta#phi(SC, trk at vtx)", "", "diele_ele2_DeltaPhiSCTrk", 100,  0., 0.1);
- 
-  DrawMyPlots("diele_ele2_Nmisshit", BasicSelections, "Number of missing hits", "", "diele_ele2_Nmisshit", 3,  -0.5, 2.5);
-  DrawMyPlots("diele_ele2_DisConv", BasicSelections, "Minimum distance between conversion tracks", "", "diele_ele2_DisConv", 50,  0.0, 0.5);
-  DrawMyPlots("diele_ele2_DeltaCotTheta", BasicSelections, "#Deltacot#theta between conversion tracks", "", "diele_ele2_DeltaCotTheta", 100,  0.0, 1.0);
- 
 }

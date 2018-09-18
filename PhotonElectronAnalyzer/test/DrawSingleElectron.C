@@ -23,9 +23,12 @@
 //==============
 const int debug=1;
 const string TreeName = "electronTree";
-const string PlotPreName = "Photon2010B_";
-const string PlotLabel = "Photon 2010B";
-const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Photon_2010B-Apr21ReReco.root";
+
+const string PlotPreName = "Photon2010B_"; //"Electron2010B_"; //"EGMonitor2010B_"; //"Electron2010B_"; //"Photon2010B_";
+const string PlotLabel = "Photon 2010B"; //"Electron 2010B"; //"EGMonitor 2010B"; //"Electron 2010B"; //"Photon 2010B";
+const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Photon_Run2010B-Apr21ReReco.root";
+//const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/Electron_Run2010B-Apr21ReReco.root";
+//const string InputFile = "/eos/cms/store/user/jtao/CMSOpenData2010/EGMonitor_Run2010B-Apr21ReReco.root";
 
 const TString PrintInfor1="#bf{CMS} #it{} #it{Preliminary}";
 const TString PrintInfor2="2010 (7 TeV)";
@@ -176,8 +179,13 @@ void DrawSingleElectron(){
   DrawMyPlots("electron_DeltaPhiSCTrk", BasicSelections, "#Delta#phi(SC, trk at vtx)", "", "electron_DeltaPhiSCTrk", 100,  0., 0.08);
  
   DrawMyPlots("electron_Nmisshit", BasicSelections, "Number of missing hits", "", "electron_Nmisshit", 3,  -0.5, 2.5);
-  DrawMyPlots("electron_DisConv", BasicSelections, "Minimum distance between conversion tracks", "", "electron_DisConv", 60,  -0.03, 0.03);
-  DrawMyPlots("electron_DeltaCotTheta", BasicSelections, "#Deltacot#theta between conversion tracks at conversion vertex:", "", "electron_DeltaCotTheta", 80,  -0.02, 0.02);
+
+  DrawMyPlots("electron_DisConv", BasicSelections, "Minimum distance between conversion tracks", "", "electron_DisConv", 100,  0.0, 0.2);
+  DrawMyPlots("electron_DeltaCotTheta", BasicSelections, "#Deltacot#theta between conversion tracks at conversion vertex", "", "electron_DeltaCotTheta", 100,  0.0, 0.2);
+
+  DrawMyPlots("electron_fbrem", BasicSelections, "f_{Brem}", "", "electron_fbrem", 65,  -0.25, 1.05);
+  DrawMyPlots("electron_ESCoPin", BasicSelections, "E/P", "", "electron_ESCoPin", 50,  0.0, 5.0);
+
 
   string BasicSelectionsEB="electron_pt>10. && fabs(electron_SCeta)<1.5"; //EB
   DrawMyPlots("electron_pt", BasicSelectionsEB, "p_{T} (GeV)", "GeV",  "electron_pt_EB", 60, 18, 78);
@@ -194,6 +202,8 @@ void DrawSingleElectron(){
  
   DrawMyPlots("electron_Nmisshit", BasicSelectionsEB, "Number of missing hits", "", "electron_Nmisshit_EB", 3,  -0.5, 2.5);
 
+  DrawMyPlots("electron_fbrem", BasicSelectionsEB, "f_{Brem}", "", "electron_fbrem_EB", 65,  -0.25, 1.05);
+  DrawMyPlots("electron_ESCoPin", BasicSelectionsEB, "E/P", "", "electron_ESCoPin_EB", 50,  0.0, 5.0);
 
   string BasicSelectionsEE="electron_pt>10. && fabs(electron_SCeta)>1.5"; //EE
   DrawMyPlots("electron_pt", BasicSelectionsEE, "p_{T} (GeV)", "GeV",  "electron_pt_EE", 60, 18, 78);
@@ -209,4 +219,7 @@ void DrawSingleElectron(){
   DrawMyPlots("electron_DeltaPhiSCTrk", BasicSelectionsEE, "#Delta#phi(SC, trk at vtx)", "", "electron_DeltaPhiSCTrk_EE", 100,  0., 0.08);
  
   DrawMyPlots("electron_Nmisshit", BasicSelectionsEE, "Number of missing hits", "", "electron_Nmisshit_EE", 3,  -0.5, 2.5);
+
+  DrawMyPlots("electron_fbrem", BasicSelectionsEE, "f_{Brem}", "", "electron_fbrem_EE", 65,  -0.25, 1.05);
+  DrawMyPlots("electron_ESCoPin", BasicSelectionsEE, "E/P", "", "electron_ESCoPin_EE", 50,  0.0, 5.0);
 }

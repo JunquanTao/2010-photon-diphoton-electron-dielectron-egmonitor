@@ -88,7 +88,7 @@ using namespace reco;
 using namespace edm;
 
 #define TAODEBUG 0
-#define TAODEBUGHLT 1
+#define TAODEBUGHLT 0
 
 class PhotonElectronAnalyzer : public edm::EDAnalyzer {
 public:
@@ -223,7 +223,6 @@ PhotonElectronAnalyzer::PhotonElectronAnalyzer(const edm::ParameterSet& iConfig)
   string hlt_pho1="HLT_Photon10_Cleaned_L1R"; 
   string hlt_pho2="HLT_Photon15_Cleaned_L1R"; 
   string hlt_pho3="HLT_Photon20_Cleaned_L1R";   
-  //string hlt_pho4="HLT_Photon25_Cleaned_L1R";
   string hlt_pho4="HLT_Photon30_Cleaned_L1R";
   string hlt_pho5="HLT_Photon50_NoHE_Cleaned_L1R";
   HLTPaths_photon.push_back(hlt_pho1);
@@ -614,10 +613,10 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
       double et_p = photons->et();
       double scEta_p = photons->superCluster()->position().Eta();
       double phi_p = photons->phi();
-      //HCAL shwoer : E^{HCAL}/E< 0:05  -> H/E
       //pixel-seed e-veto
+      //sigmaIetaIeta < 0.011/0.03 in EB/EE
+      //H/E (hadronicOverEm) < 0.05 
       //IsoTRK < 2 GeV, 0.04-0.4 hollow cone
-      //sigmaIetaIeta < 0.011/0.03 in EB/EE and HoE (hadronicOverEm) < 0.05 
       //IsoECAL < 4.2 GeV, 0.06-0.4 cone
       //IsoHCAL < 2.2 GeV, 0.15-0.4 cone
       //if ( et_p > 21. && fabs(scEta_p) < 1.45   && !photons->hasPixelSeed() && photons->hadronicOverEm() < 0.05 && photons->trkSumPtHollowConeDR04() < 2. && photons->ecalRecHitSumEtConeDR04() < 4.2 && photons->hcalTowerSumEtConeDR04() < 2.2 ) {
@@ -632,8 +631,9 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 
       //diphoton analyzer  QCD-10-035 : JHEP01(2012)133)
       //To make it simple, I select (ref. but a little diff. from diphoton XS measurement with 2010 data - JHEP01(2012)133)
-      //sigmaIetaIeta < 0.011/0.03 in EB/EE and HoE (hadronicOverEm) < 0.05 
       //(loose selections of PAS-EGM-10-006 http://cdsweb.cern.ch/record/1324545)
+      //pixel-seed e-veto
+      //sigmaIetaIeta < 0.011/0.03 in EB/EE and HoE (hadronicOverEm) < 0.05 
       //Track ISO (cone DeltaR=0.4) trkSumPtHollowConeDR04 < 2./4. GeV in EB/EE
       //HCAL ISO (cone DeltaR=0.4) hcalTowerSumEtConeDR04 < 2./4. GeV in EB/EE
       //ECAL ISO (cone DeltaR=0.3) ecalRecHitSumEtConeDR03 < 0.2 * photon PT     
@@ -666,7 +666,7 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 			if(et_p2 > et_p){
 			  Diphoton_LeadInd = photon2Ind; Diphoton_SubLeadInd = photonIndex; 
 			}
-			if( et_p2 + et_p > maxSumPT ) { // if more then 2 selected diphotons, select the pair with the largest aum PT
+			if( et_p2 + et_p > maxSumPT ) { // if more than 2 selected diphotons, select the pair with the largest sum PT
 			  maxSumPT = et_p2 + et_p;
 			  dipho_pho1_ind = Diphoton_LeadInd;  dipho_pho2_ind = Diphoton_SubLeadInd;  
 			}
@@ -833,7 +833,8 @@ PhotonElectronAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	    if(electron2Ind != electronIndex){
 	      double pt_ele2 = electrons2->pt();
 	      double scEta_ele2 = electrons2->superCluster()->position().Eta();
-	      if(  pt_ele2 > 20 &&  fabs(scEta_ele2) < 2.5 && !(fabs(scEta_ele2)>1.4442 && fabs(scEta_ele2)<1.566) ){ //kinematic
+              int QProd = electrons->charge()*electrons2->charge();
+	      if(  pt_ele2 > 20 &&  fabs(scEta_ele2) < 2.5 && !(fabs(scEta_ele2)>1.4442 && fabs(scEta_ele2)<1.566) && QProd<0){ //kinematic
                 n_dielectron_sel ++;
 		TLorentzVector lead_p4; lead_p4.SetPtEtaPhiM(pt_ele, electrons->eta(), electrons->phi(), electrons->mass());
 		TLorentzVector sublead_p4; sublead_p4.SetPtEtaPhiM(pt_ele2, electrons2->eta(), electrons2->phi(), electrons2->mass());
