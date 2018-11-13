@@ -48,4 +48,17 @@ scramv1 b
 cd CMSOpenDataAnalysis/PhotonElectronAnalyzer/test/
 cmsRun  PhotonElectronAnalyzer.py
 ```
+After the running of this example, you will get an output root file, PhotonElectron_Test.root, containing the five minitrees as mention above.
+
+
+## Running CRAB jobs to analysis the full dataset found in DAS, with SLC7 as mentioned above
+
+You can use the "crabConfig_\*.py" in the test directory to create the CRAB job work directory for different dataset, "crabConfig_Photon.py" for 2010B Photon dataset, "crabConfig_Electron.py" for 2010B Electron dataset and "crabConfig_Egamma.py" for 2010B EGMonitor dataset. By dafault, in these cfg file, the output will be stored to my CERN T2 area, you need to change the followng two lines according to the T2 site you can access:
+
+```
+config.Data.outLFNDirBase = "/store/user/jtao/CMSOpenData2010/"
+config.Site.storageSite = 'T2_CH_CERN'  # you might need to change this to a site you have acces too
+```
+
+Please follow the CRAB command for jub submission
 
