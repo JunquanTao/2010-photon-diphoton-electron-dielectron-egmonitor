@@ -60,5 +60,19 @@ config.Data.outLFNDirBase = "/store/user/jtao/CMSOpenData2010/"
 config.Site.storageSite = 'T2_CH_CERN'  # you might need to change this to a site you have acces too
 ```
 
-Please follow the CRAB command for jub submission
+Please follow the CRAB commands for Grid job submission, 
+https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookCRAB3Tutorial .
 
+
+## Running the ROOT and C++ based scripts ("Draw\*.C") in test/ to draw the plots, based on the five minitrees.
+
+Please modify the codes to take the outputs (rootuples) of your CRAB jobs as the input root files of these scripts. Then simply usingfor example 
+```
+cd PhotonElectronAnalyzer/test/
+root -l -b -q DrawEvtTreeVar.C 
+```
+to obtain the final validation plots.
+
+
+
+Please enjoy!
