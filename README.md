@@ -4,7 +4,7 @@ A brief introduction for this repo which contains different examples:
 
 a) Firstly two simple codes for the photon/diphoton analysis ("DecaysToPhotons") and electron/dielectron analysis ("DecaysToElectrons"). You can run the examples according to the README in each work directory. These codes were developed for quick check on the plots of photon/diphoton/electron/dielectron objects. Only histograms are stored and you can run the codes with Python based command. You can run the codes locally (cann't submit the CRAB jobs) and check small part of the datasets.
 
-b) Then new codes are developed to validate 2010B datasets : Photon, Electron and EGMonitor. The codes "PhotonElectronAnalyzer" include Standard EDAnalyzer and store five minitrees for general event information ("eventTree"), single photon ("photonTree"), diphoton ("diphotonTree"), single electron ("electronTree") and di-electron ("dielectronTree") after some selections. You can run "cmsRun PhotonElectronAnalyzer.py" in the sub-directory test to test the codes, "crabConfig_*.py" in test directory for crab job submission, and some ROOT and C++ based scripts ("Draw*.C") in test to draw the plots, based on the five minitrees.
+b) Then new codes are developed to validate 2010B datasets : Photon, Electron and EGMonitor. The codes "PhotonElectronAnalyzer" include Standard EDAnalyzer and store five minitrees for general event information ("eventTree"), single photon ("photonTree"), diphoton ("diphotonTree"), single electron ("electronTree") and di-electron ("dielectronTree") after some selections. You can run "cmsRun PhotonElectronAnalyzer.py" in the sub-directory test to test the codes, "crabConfig_\*.py" in test directory for crab job submission, and some ROOT and C++ based scripts ("Draw\*.C") in test to draw the plots, based on the five minitrees.
 
 
 The following recipe are based on case b) with "PhotonElectronAnalyzer".
@@ -45,7 +45,7 @@ scramv1 b
 ## Running the example in the test to check if the codes can be ran sucessfully
 
 ```
-CMSOpenDataAnalysis/PhotonElectronAnalyzer/test/
+cd CMSOpenDataAnalysis/PhotonElectronAnalyzer/test/
 cmsRun  PhotonElectronAnalyzer.py
 ```
 
